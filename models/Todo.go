@@ -50,3 +50,7 @@ func DeleteATodo(id string) (err error) {
 	err = dao.DB.Where("id = ?", id).Delete(&Todo{}).Error
 	return
 }
+
+func (t *Todo) TableName() string {
+	return "todo_tab"
+}
