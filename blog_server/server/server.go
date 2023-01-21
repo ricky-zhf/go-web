@@ -1,18 +1,31 @@
 package server
 
 import (
-	pb "bubble/pb"
+	"blog_server/dao"
+	"blog_server/pb"
 	"context"
+	"log"
 )
 
 type BlogServer struct {
-	pb.UnimplementedBlogServer
+	pb.UnimplementedBlogServiceServer
 }
 
 func (s *BlogServer) GetBlog(ctx context.Context, in *pb.GetBlogRequest) (*pb.GetBlogResponse, error) {
-	return &pb.GetBlogResponse{
-		Author:  "zhf",
-		Title:   "title",
-		Content: "zhf's blog",
-	}, nil
+	blogs, err := dao.GetBlogs()
+	if err != nil {
+		log.Println("failed to get blogs|err=", err)
+		return nil, nil
+	}
+	var res []*pb.Blog
+	defer log.Println("Get Res=", res, "err", err)
+	for _, v := range blogs {
+		res = append(res, &pb.Blog{
+			Author:  v.Author,
+			Title:   v.Title,
+			Content: v.Content,
+		})
+	}
+
+	return &pb.GetBlogResponse{Blog: res}, nil
 }

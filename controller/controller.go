@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"bubble/models"
+	"blog/blog_server/dao"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -16,13 +16,13 @@ func IndexHandler(c *gin.Context) {
 func CreateATodo(c *gin.Context) {
 	//前端页面填写一个待办事项，提交到此路由。
 	//(1)从请求中拉取数据
-	var todo models.Todo
+	var todo dao.Todo
 	//绑定json
 	if err2 := c.ShouldBind(&todo); err2 != nil {
 		panic(err2)
 	}
 	//(2)存入数据库
-	err := models.CreateATodo(&todo)
+	err := dao.CreateATodo(&todo)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
 	} else { //(3)返回响应
@@ -36,7 +36,7 @@ func CreateATodo(c *gin.Context) {
 }
 
 func GetTodoList(c *gin.Context) {
-	todoList, err := models.GetTodoList()
+	todoList, err := dao.GetTodoList()
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"error": err})
 	} else {
@@ -53,7 +53,7 @@ func UpdateATodo(c *gin.Context) {
 		return
 	}
 	//2.根据id获取对应的记录，然后赋值给todo变量
-	todo, err := models.GetATodoById(id)
+	todo, err := dao.GetATodoById(id)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
 		return
@@ -64,7 +64,7 @@ func UpdateATodo(c *gin.Context) {
 	} else {
 		todo.Status = true
 	}
-	err = models.UpdateATodo(todo)
+	err = dao.UpdateATodo(todo)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"err": err.Error(),
@@ -82,7 +82,7 @@ func DeleteATodo(c *gin.Context) {
 		//c.json后如果不想让代码继续执行一定要返回
 		return
 	}
-	err := models.DeleteATodo(id)
+	err := dao.DeleteATodo(id)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
 	} else {
