@@ -23,17 +23,19 @@ RUN go mod tidy
 # 拷贝
 COPY . .
 # 将我们的代码编译成二进制可执行文件app
-RUN go env && go build -o go_app main.go
+RUN go env && go build -o user_server main.go
+
+RUN ls -l
 
 
 FROM debian:stretch-slim
 # 需要再容器中使用sh命令，所以不能用stretch
 # 从builder镜像中把go_app拷贝到当前目录下
-COPY --from=builder /app/go_app /
+COPY --from=builder /app/user_server /
 COPY --from=builder /app/config ./config
 # 拷贝config文件，目的文件目录没有config文件夹，所以要用./config
 # 声明服务端口
-EXPOSE 9090
+EXPOSE 9091
 # docker run 时执行命令
-ENTRYPOINT ["/go_app"]
-#docker build . -t go_app
+ENTRYPOINT ["/user_server"]
+#docker build . -t user_server

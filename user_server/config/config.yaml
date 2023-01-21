@@ -1,0 +1,13 @@
+#port: 10666
+mysql:
+  #localhost 13306
+  host: mysqlv1
+  port: 3306
+  user: root
+  password: 1234
+  db: go
+
+etcd:
+  endpoints:
+    - "etcd_server:2379"
+    #etcd_server
