@@ -1,0 +1,11 @@
+# Package Files #
+*.exe
+
+# Compiled class file
+*.class
+
+# Log file
+*.log
+
+# Packages
+/pkg

@@ -15,7 +15,6 @@ var (
 
 //链接mysql
 func InitMySQL() error {
-	common
 
 	log.Println("init mysql start...")
 	defer func() {
