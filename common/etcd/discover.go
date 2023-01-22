@@ -15,24 +15,22 @@ import (
 	- 随后watchService方法监控etcd中前缀为serviceName是否变动，并更新到svrInfoMap中
 */
 
-func (e *EtcdRegister) DiscoverService(serviceName string) error {
+func (e *EtcdRegister) DiscoverService(serviceName string) {
 	serviceName = ETCDPrefix + serviceName
 	// Client.KV 是一个 interface ，提供了关于 K-V 操作的所有方法.
 	kv := clientv3.NewKV(e.etcdClient)
 	resp, err := kv.Get(e.ctx, serviceName, clientv3.WithPrefix())
 	if err != nil {
 		fmt.Printf("get kv from etcd failed|serName=%v|err=%v\n", serviceName, err)
-		return err
 	}
 
-	//update svrMap
+	// update svrMap
 	for _, kv := range resp.Kvs {
 		e.updateSvrMap(string(kv.Key))
 	}
 
+	// watch service change
 	go e.watchService()
-
-	return nil
 }
 
 func (e *EtcdRegister) watchService() {

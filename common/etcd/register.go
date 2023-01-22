@@ -95,27 +95,27 @@ func (e *EtcdRegister) Close() error {
 }
 
 // RegisterServeice 注册服务 expire 过期时间
-func (e *EtcdRegister) RegisterServeice(serviceName, ip, port, weight string, expire int64) (err error) {
+func (e *EtcdRegister) RegisterServeice(serviceName, ip, port, weight string, expire int64) {
 	// 创建租约
+	var err error
 	if err = e.CreateLease(expire); err != nil {
-		return err
+		return
 	}
 
 	// 绑定租约
 	key := generateKey(serviceName, ip, port)
 	if err = e.BindLease(key, weight); err != nil {
-		return err
+		return
 	}
 
 	// 续租
 	keepAliveChan, err := e.KeepAlive()
 	if err != nil {
-		return err
+		return
 	}
 
 	// 监听续约
 	go e.WatchLicense(keepAliveChan)
-	return nil
 }
 
 // RegisterAndDiscover 创建etcd register & discover
@@ -140,20 +140,9 @@ func RegisterAndDiscover(endpoints []string, expire int, serviceName, port, weig
 	//defer etcdRegister.Close()
 
 	// 服务注册
-	go func() {
-		if err = etcdRegister.RegisterServeice(serviceName, tools.GetLocalIP(), port, weight, ttl); err != nil {
-			log.Println("etcd RegisterService failed,error=", err)
-			return
-		}
-	}()
+	etcdRegister.RegisterServeice(serviceName, tools.GetLocalIP(), port, weight, ttl)
 
-	go func() {
-		// 服务发现
-		if err = etcdRegister.DiscoverService(serviceName); err != nil {
-			log.Println("etcd DiscoverService failed,error=", err)
-			return
-		}
-	}()
+	go etcdRegister.DiscoverService(serviceName)
 
 	return nil
 }
