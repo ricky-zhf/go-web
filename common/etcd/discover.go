@@ -15,7 +15,8 @@ import (
 	- 随后watchService方法监控etcd中前缀为serviceName是否变动，并更新到svrInfoMap中
 */
 
-func (e *EtcdRegister) GetService(serviceName string) error {
+func (e *EtcdRegister) DiscoverService(serviceName string) error {
+	serviceName = ETCDPrefix + serviceName
 	// Client.KV 是一个 interface ，提供了关于 K-V 操作的所有方法.
 	kv := clientv3.NewKV(e.etcdClient)
 	resp, err := kv.Get(e.ctx, serviceName, clientv3.WithPrefix())

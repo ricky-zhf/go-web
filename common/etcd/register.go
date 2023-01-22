@@ -3,6 +3,7 @@ package etcd
 import (
 	"context"
 	"fmt"
+	"github.com/ricky-zhf/go-web/common/tools"
 	clientv3 "go.etcd.io/etcd/client/v3"
 	"log"
 	"sync"
@@ -68,9 +69,9 @@ func (e *EtcdRegister) KeepAlive() (<-chan *clientv3.LeaseKeepAliveResponse, err
 func (e *EtcdRegister) WatchLicense(eChan <-chan *clientv3.LeaseKeepAliveResponse) {
 	for {
 		select {
-		case <-eChan:
+		case l := <-eChan:
 			// 续约成功这里会输出eChan
-			// log.Printf("watcher keepalive successfully|key=%v|val:%+v \n", key, l)
+			log.Printf("watcher keepalive successfully|lience:%+v \n", l)
 		case <-e.ctx.Done():
 			_ = e.Close()
 			log.Println("watcher keepalive end...")
@@ -93,8 +94,8 @@ func (e *EtcdRegister) Close() error {
 	return e.etcdClient.Close()
 }
 
-// RegisterServer 注册服务 expire 过期时间
-func (e *EtcdRegister) RegisterServer(serviceName, ip, port string, weight string, expire int64) (err error) {
+// RegisterServeice 注册服务 expire 过期时间
+func (e *EtcdRegister) RegisterServeice(serviceName, ip, port, weight string, expire int64) (err error) {
 	// 创建租约
 	if err = e.CreateLease(expire); err != nil {
 		return err
@@ -117,15 +118,15 @@ func (e *EtcdRegister) RegisterServer(serviceName, ip, port string, weight strin
 	return nil
 }
 
-// NewEtcdRegister 创建etcd register
-func NewEtcdRegister(endpoints []string, ttl int) (*EtcdRegister, error) {
+// RegisterAndDiscover 创建etcd register & discover
+func RegisterAndDiscover(endpoints []string, expire int, serviceName, port, weight string, ttl int64) error {
 	cli, err := clientv3.New(clientv3.Config{
 		Endpoints:   endpoints,
-		DialTimeout: time.Duration(ttl) * time.Second,
+		DialTimeout: time.Duration(expire) * time.Second,
 	})
 	if err != nil {
 		log.Println("new etcd client failed,error=", err)
-		return nil, err
+		return err
 	}
 
 	ctx, cancelFunc := context.WithCancel(context.Background())
@@ -136,7 +137,25 @@ func NewEtcdRegister(endpoints []string, ttl int) (*EtcdRegister, error) {
 		cancel:     cancelFunc,
 		svrInfoMap: make(map[string]map[string]string, 0),
 	}
-	return etcdRegister, nil
+	//defer etcdRegister.Close()
+
+	// 服务注册
+	go func() {
+		if err = etcdRegister.RegisterServeice(serviceName, tools.GetLocalIP(), port, weight, ttl); err != nil {
+			log.Println("etcd RegisterService failed,error=", err)
+			return
+		}
+	}()
+
+	go func() {
+		// 服务发现
+		if err = etcdRegister.DiscoverService(serviceName); err != nil {
+			log.Println("etcd DiscoverService failed,error=", err)
+			return
+		}
+	}()
+
+	return nil
 }
 
 // ETCDKEY-blog_server-192.168.0.1-9090
