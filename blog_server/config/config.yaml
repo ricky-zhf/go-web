@@ -1,5 +1,17 @@
-port: 10666
+service:
+  name: blog_server
+  port: 9090
+  weight: 1
+
 mysql:
-  url: "127.0.0.1:3306"
-  username: root
-  password: 123456
+  #localhost db
+  host: db
+  port: 3306
+  user: root
+  password: 1234
+  db: GoWeb
+
+etcd:
+  endpoints:
+    - "etcd_server:2379"
+    #etcd_server localhost

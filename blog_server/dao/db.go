@@ -1,8 +1,6 @@
 package dao
 
-//将定义的模型放在这个目录中
-//其次，对于模型所有的原子操作，即增删改查等操作也放在此处
-//Blog model
+// Blog 将定义的模型放在这个目录中 其次，对于模型所有的原子操作，即增删改查等操作也放在此处
 type Blog struct {
 	Id      int    `json:"id"`
 	Author  string `json:"author"`

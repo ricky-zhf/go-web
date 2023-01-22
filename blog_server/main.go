@@ -1,10 +1,13 @@
 package main
 
 import (
-	"blog_server/dao"
-	"blog_server/pb"
-	. "blog_server/server"
+	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/ricky-zhf/go-web/blog_server/config"
+	"github.com/ricky-zhf/go-web/blog_server/dao"
+	se "github.com/ricky-zhf/go-web/blog_server/server"
+	"github.com/ricky-zhf/go-web/common/etcd"
+	"github.com/ricky-zhf/go-web/common/pb"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 	"log"
@@ -13,33 +16,39 @@ import (
 )
 
 func main() {
-	err := dao.InitMySQL()
-	if err != nil {
-		log.Panicln("failed to init mysql|err=", err)
+	var err error
+	if err = config.InitConfig(); err != nil {
+		log.Fatalln("init config failed|err=", err)
 	}
-	log.Println("InitMySQL successful")
+
+	if err = dao.InitMySQL(); err != nil {
+		log.Fatalln("init mysql failed|err=", err)
+	}
 	defer dao.CloseDB()
 
-	listen, err := net.Listen("tcp", ":9090") //这里不能使用127.0.0.1,因为要放到docker里会导致只能在docker里面才能访问服务
-	if err != nil {
-		log.Panicln("net.Listen failed|err=", err)
+	if err = etcd.RegisterAndDiscover(
+		config.Conf.Etcd.Endpoints, 5, config.Conf.Service.Name,
+		config.Conf.Service.Port, config.Conf.Service.Weight, 5,
+	); err != nil {
+		log.Fatalln("init etcd failed|err=", err)
 	}
-	log.Println("Listen 9090 successful")
+
+	//这里不能使用127.0.0.1,因为要放到docker里会导致只能在docker里面才能访问服务
+	listen, err := net.Listen("tcp", fmt.Sprintf(":%s", config.Conf.Service.Port))
+	if err != nil {
+		log.Fatalln("net.Listen failed|err=", err)
+	}
 	defer listen.Close()
 
 	server := grpc.NewServer()
-	reflection.Register(server)
-	pb.RegisterBlogServiceServer(server, &BlogServer{})
+	reflection.Register(server) //供grpcurl命令使用
+	pb.RegisterBlogServiceServer(server, &se.BlogServer{})
 
-	log.Println("start listening...")
+	log.Println("grpc register end...")
 
-	//startRoute()
-
-	err = server.Serve(listen)
-	if err != nil {
-		log.Panicln("failed to server|err=", err)
+	if err = server.Serve(listen); err != nil {
+		log.Fatalln("failed to server|err=", err)
 	}
-
 }
 
 func startRoute() {

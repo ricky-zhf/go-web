@@ -1,9 +1,9 @@
 package server
 
 import (
-	"blog_server/dao"
-	"blog_server/pb"
 	"context"
+	"github.com/ricky-zhf/go-web/blog_server/dao"
+	"github.com/ricky-zhf/go-web/common/pb"
 	"log"
 )
 
