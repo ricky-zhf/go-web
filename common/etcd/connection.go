@@ -9,11 +9,12 @@ import (
 func GetAddress(serviceName string) string {
 	addrMap, ok := etcdTool.svrInfoMap[serviceName]
 	if !ok {
-		log.Println("GetAddress no info|serviceName=", serviceName)
+		log.Printf("GetAddress no info|serviceName=%v|svrInfoMap=%+v\n", serviceName, etcdTool.svrInfoMap)
 		return ""
 	}
 
-	log.Println("GetAddress | addr=", addrMap)
+	log.Println("GetAddress | addrMap=", addrMap)
+
 	//随机取
 	addrSlice := make([]string, 0)
 	for k, v := range addrMap {
