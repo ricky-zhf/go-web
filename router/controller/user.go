@@ -20,7 +20,7 @@ const (
 */
 
 func HandlerUserRouter(r *gin.RouterGroup) {
-	r.GET("/GetUserAllBlogs", GetUserAllBlogs)
+	r.POST("/GetUserAllBlogs", GetUserAllBlogs)
 }
 
 func GetUserAllBlogs(c *gin.Context) {
@@ -36,7 +36,7 @@ func GetUserAllBlogs(c *gin.Context) {
 		return
 	}
 
-	address := etcd.GetAddress("blog.UserService")
+	address := etcd.GetAddress("Server_Register-blog.UserService")
 	log.Println("GetUserAllBlogs GetAddress|addr=", address)
 
 	c.JSON(http.StatusOK, gin.H{

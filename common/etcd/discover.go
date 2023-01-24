@@ -16,17 +16,16 @@ import (
 */
 
 func (e *EtcdRegister) DiscoverService(serviceName string) {
-	serviceName = ETCDPrefix + serviceName
 	// Client.KV 是一个 interface ，提供了关于 K-V 操作的所有方法.
 	kv := clientv3.NewKV(e.etcdClient)
-	resp, err := kv.Get(e.ctx, serviceName, clientv3.WithPrefix())
+	resp, err := kv.Get(e.ctx, ETCDPrefix, clientv3.WithPrefix())
 	if err != nil {
 		fmt.Printf("get kv from etcd failed|serName=%v|err=%v\n", serviceName, err)
 	}
 
 	// update svrMap
-	for _, kv := range resp.Kvs {
-		e.updateSvrMap(string(kv.Key))
+	for _, k := range resp.Kvs {
+		e.updateSvrMap(string(k.Key))
 	}
 
 	// watch service change

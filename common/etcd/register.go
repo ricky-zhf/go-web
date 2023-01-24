@@ -140,8 +140,9 @@ func RegisterAndDiscover(endpoints []string, expire int, serviceName, port, weig
 	//defer etcdTool.Close()
 
 	// 服务注册
-	etcdTool.RegisterServeice(serviceName, tools.GetLocalIP(), port, weight, ttl)
+	go etcdTool.RegisterServeice(serviceName, tools.GetLocalIP(), port, weight, ttl)
 
+	// 服务发现
 	go etcdTool.DiscoverService(serviceName)
 
 	return nil
