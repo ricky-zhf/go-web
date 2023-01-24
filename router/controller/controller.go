@@ -2,6 +2,7 @@ package controller
 
 import (
 	"github.com/gin-gonic/gin"
+	"log"
 	"net/http"
 )
 
@@ -16,7 +17,16 @@ func IndexHandler(c *gin.Context) {
 }
 
 func BlogServiceRoute(c *gin.Context) {
+	data, err := c.GetRawData()
+	if err != nil {
+		log.Println("BlogServiceRoute GetRawData failed|err=", err)
+		return
+	}
 
+	c.JSON(http.StatusOK, gin.H{
+		"code": 200,
+		"msg":  "success",
+	})
 }
 
 func CreateATodo(c *gin.Context) {
