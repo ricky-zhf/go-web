@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
-	"user_server/config"
+	"github.com/ricky-zhf/go-web/user_server/config"
 )
 
 var (

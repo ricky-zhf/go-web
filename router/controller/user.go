@@ -5,6 +5,8 @@ import (
 	"github.com/golang/protobuf/jsonpb"
 	"github.com/ricky-zhf/go-web/common/etcd"
 	"github.com/ricky-zhf/go-web/common/pb/user"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 	"log"
 	"net/http"
 )
@@ -36,8 +38,21 @@ func GetUserAllBlogs(c *gin.Context) {
 		return
 	}
 
-	address := etcd.GetAddress("Server_Register-blog.UserService")
+	address := etcd.GetAddress("blog.UserService")
 	log.Println("GetUserAllBlogs GetAddress|addr=", address)
+
+	conn, err := grpc.Dial(address, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	if err != nil {
+		log.Fatalln("client cannot dial grpc server|err=", err)
+	}
+	client := user.NewUserServiceClient(conn)
+
+	//使用服务定义好的方法
+	res, err := client.GetAllUserBlogs(c, userPb)
+	if err != nil {
+		log.Println("GetBlog Failed|err=", err)
+	}
+	log.Println("ressssss", res)
 
 	c.JSON(http.StatusOK, gin.H{
 		"code": 200,

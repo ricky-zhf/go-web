@@ -6,7 +6,7 @@ require (
 	github.com/gin-gonic/gin v1.8.2
 	github.com/golang/protobuf v1.5.2
 	github.com/jinzhu/gorm v1.9.16
-	github.com/ricky-zhf/go-web/common v
+	github.com/ricky-zhf/go-web/common v0.0.0-20230124153717-6c2851431ddb
 	github.com/spf13/viper v1.15.0
 )
 

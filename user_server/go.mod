@@ -1,13 +1,12 @@
-module user_server
+module github.com/ricky-zhf/go-web/user_server
 
 go 1.18
 
 require (
 	github.com/jinzhu/gorm v1.9.16
-	github.com/ricky-zhf/go-web/common v0.0.0-20230122144025-b04e3b07e812
+	github.com/ricky-zhf/go-web/common v0.0.0-20230124153717-6c2851431ddb
 	github.com/spf13/viper v1.15.0
 	google.golang.org/grpc v1.52.0
-	google.golang.org/protobuf v1.28.1
 )
 
 require (
@@ -37,7 +36,7 @@ require (
 	golang.org/x/sys v0.3.0 // indirect
 	golang.org/x/text v0.5.0 // indirect
 	google.golang.org/genproto v0.0.0-20221227171554-f9683d7f8bef // indirect
-	gopkg.in/check.v1 v1.0.0-20190902080502-41f04d3bba15 // indirect
+	google.golang.org/protobuf v1.28.1 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
