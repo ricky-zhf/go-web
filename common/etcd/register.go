@@ -19,7 +19,7 @@ const (
 )
 
 var (
-	EtcdTool *EtcdRegister
+	etcdTool *EtcdRegister
 )
 
 type EtcdRegister struct {
@@ -131,18 +131,18 @@ func RegisterAndDiscover(endpoints []string, expire int, serviceName, port, weig
 
 	ctx, cancelFunc := context.WithCancel(context.Background())
 
-	EtcdTool = &EtcdRegister{
+	etcdTool = &EtcdRegister{
 		etcdClient: cli,
 		ctx:        ctx,
 		cancel:     cancelFunc,
 		svrInfoMap: make(map[string]map[string]string, 0),
 	}
-	//defer EtcdTool.Close()
+	//defer etcdTool.Close()
 
 	// 服务注册
-	EtcdTool.RegisterServeice(serviceName, tools.GetLocalIP(), port, weight, ttl)
+	etcdTool.RegisterServeice(serviceName, tools.GetLocalIP(), port, weight, ttl)
 
-	go EtcdTool.DiscoverService(serviceName)
+	go etcdTool.DiscoverService(serviceName)
 
 	return nil
 }

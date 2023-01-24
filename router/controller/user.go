@@ -31,8 +31,6 @@ func GetUserAllBlogs(c *gin.Context) {
 		return
 	}
 
-	etcd.Regi
-
 	c.JSON(http.StatusOK, gin.H{
 		"code": 200,
 		"msg":  "success",
