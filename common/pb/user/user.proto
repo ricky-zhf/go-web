@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+// 在common目录下执行
+// protoc --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative pb/user/user.proto
+
+//option go_package = "path;name";
+//path 表示生成的go文件的存放地址，会自动生成目录的。
+//name 表示生成的go文件所属的包名
+option go_package="github.com/ricky-zhf/go-web/common/pb/user";
+// 定义包名
+package user;
+
+import "pb/blog/blog.proto";
+
+// 定义服务
+service UserService {
+  // SayHello 方法
+  rpc GetAllUserBlogs (GetAllUserBlogsRequest) returns (GetAllUserBlogsResponse) {}
+}
+
+// 请求消息
+message GetAllUserBlogsRequest {
+  string user_id = 1;
+}
+
+// 响应消息
+message GetAllUserBlogsResponse {
+  repeated blogProto.Blog blog = 1;
+}
+

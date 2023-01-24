@@ -11,4 +11,6 @@
 - MySQL、Redis
 - docker、etcd
 
-# 3、
+# 3、网关
+- HTTP转GRPC
+- 流量转发，根据请求接口的地址

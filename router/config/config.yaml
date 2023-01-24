@@ -4,7 +4,7 @@ service:
   weight: 1
 
 #port: 10666
-mysql:
+BackendService:
   #localhost db
   host: db
   port: 3306

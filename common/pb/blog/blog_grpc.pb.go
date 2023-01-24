@@ -2,9 +2,9 @@
 // versions:
 // - protoc-gen-go-grpc v1.2.0
 // - protoc             v3.21.8
-// source: pb/blog.proto
+// source: pb/blog/blog.proto
 
-package pb
+package blogGo
 
 import (
 	context "context"
@@ -36,7 +36,7 @@ func NewBlogServiceClient(cc grpc.ClientConnInterface) BlogServiceClient {
 
 func (c *blogServiceClient) GetBlog(ctx context.Context, in *GetBlogRequest, opts ...grpc.CallOption) (*GetBlogResponse, error) {
 	out := new(GetBlogResponse)
-	err := c.cc.Invoke(ctx, "/pb.BlogService/GetBlog", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/blogProto.BlogService/GetBlog", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -82,7 +82,7 @@ func _BlogService_GetBlog_Handler(srv interface{}, ctx context.Context, dec func
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/pb.BlogService/GetBlog",
+		FullMethod: "/blogProto.BlogService/GetBlog",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(BlogServiceServer).GetBlog(ctx, req.(*GetBlogRequest))
@@ -94,7 +94,7 @@ func _BlogService_GetBlog_Handler(srv interface{}, ctx context.Context, dec func
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var BlogService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "pb.BlogService",
+	ServiceName: "blogProto.BlogService",
 	HandlerType: (*BlogServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -103,5 +103,5 @@ var BlogService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "pb/blog.proto",
+	Metadata: "pb/blog/blog.proto",
 }

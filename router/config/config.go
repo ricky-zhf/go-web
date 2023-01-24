@@ -6,18 +6,16 @@ import (
 	"os"
 )
 
-type MySQL struct {
-	Host     string
-	Port     string
-	User     string
-	Password string
-	DB       string
+type BackendServices struct {
+	UserService string
+	BlogService string
 }
 
 type Config struct {
-	MySQL   MySQL
-	Etcd    Etcd
-	Service Service
+	UserServer string
+	BlogServer string
+	Etcd       Etcd
+	Service    Service
 }
 
 type Service struct {
@@ -41,10 +39,11 @@ func InitConfig() (err error) {
 	//todo delete
 	workDir, err := os.Getwd()
 	if err != nil {
-		log.Println("读取应用目录失败|err=", err)
+		log.Println("failed to get wd|err=", err)
 	}
 	log.Println("work dir=", workDir)
 
+	// 通过docker部署后，workDir是/ ，config目录已经通过dockerFile复制到/下面了，所以直接用config路径即可。
 	viper.SetConfigFile("config/config.yaml")
 
 	// 读取配置信息

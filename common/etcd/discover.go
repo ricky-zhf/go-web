@@ -78,5 +78,5 @@ func (e *EtcdRegister) updateSvrMap(s string) {
 }
 
 func splitKey(key string) []string {
-	return strings.Split(key, "-")
+	return strings.Split(key, ":")
 }

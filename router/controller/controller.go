@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"blog/blog_server/dao"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -9,8 +8,15 @@ import (
 //controller-路由解析与转发
 //里面不会有对数据的具体操作，只会调用logic层（类似于service层）中的方法来进行操作。
 func IndexHandler(c *gin.Context) {
-	c.HTML(http.StatusOK, "index.html", nil)
-	//test change
+	c.JSON(http.StatusOK, gin.H{
+		"code": 2000,
+		"msg":  "success",
+		"data": "success to find index",
+	})
+}
+
+func BlogServiceRoute(c *gin.Context) {
+
 }
 
 func CreateATodo(c *gin.Context) {

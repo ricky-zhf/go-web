@@ -149,5 +149,5 @@ func RegisterAndDiscover(endpoints []string, expire int, serviceName, port, weig
 
 // ETCDKEY-blog_server-192.168.0.1-9090
 func generateKey(serviceName, ip, port string) string {
-	return fmt.Sprintf("%s-%s-%s-%s", ETCDPrefix, serviceName, ip, port)
+	return fmt.Sprintf("%s:%s:%s:%s", ETCDPrefix, serviceName, ip, port)
 }
