@@ -69,9 +69,9 @@ func (e *EtcdRegister) KeepAlive() (<-chan *clientv3.LeaseKeepAliveResponse, err
 func (e *EtcdRegister) WatchLicense(eChan <-chan *clientv3.LeaseKeepAliveResponse) {
 	for {
 		select {
-		case l := <-eChan:
+		case <-eChan:
 			// 续约成功这里会输出eChan
-			log.Printf("watcher keepalive successfully|lience:%+v \n", l)
+			//log.Printf("watcher keepalive successfully|lience:%+v \n", l)
 		case <-e.ctx.Done():
 			_ = e.Close()
 			log.Println("watcher keepalive end...")

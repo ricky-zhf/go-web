@@ -1,18 +1,14 @@
 service:
-  name: user_server
-  port: 9091
+  name: router_server
+  port: 9092
   weight: 1
 
 #port: 10666
-BackendService:
+#BackendService:
   #localhost db
-  host: db
-  port: 3306
-  user: root
-  password: 1234
-  db: GoWeb
+
 
 etcd:
   endpoints:
-    - "etcd_server:2379"
+    - "localhost:2379"
     #etcd_server localhost

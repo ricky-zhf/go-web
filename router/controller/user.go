@@ -3,9 +3,14 @@ package controller
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/golang/protobuf/jsonpb"
+	"github.com/ricky-zhf/go-web/common/etcd"
 	"github.com/ricky-zhf/go-web/common/pb/user"
 	"log"
 	"net/http"
+)
+
+const (
+	GetUserAllBlogsUri = "/GetUserAllBlogs"
 )
 
 /*
@@ -30,6 +35,9 @@ func GetUserAllBlogs(c *gin.Context) {
 		log.Println("GetUserAllBlogs UnmarshalString failed|err=", err)
 		return
 	}
+
+	address := etcd.GetAddress("blog.UserService")
+	log.Println("GetUserAllBlogs GetAddress|addr=", address)
 
 	c.JSON(http.StatusOK, gin.H{
 		"code": 200,
