@@ -13,11 +13,11 @@ package user;
 // 定义服务
 service UserService {
   // SayHello 方法
-  rpc VerifyUserPwd (GetAllUserBlogsRequest) returns (GetAllUserBlogsResponse) {}
+  rpc VerifyUserPwd (VerifyUserPwdRequest) returns (VerifyUserPwdResponse) {}
 }
 
 // 请求消息
-message GetAllUserBlogsRequest {
+message VerifyUserPwdRequest {
   string name = 1;
   string password = 2;
 }
@@ -27,7 +27,7 @@ enum ResOfPwd {
     Forbid = 1;
 }
 // 响应消息
-message GetAllUserBlogsResponse {
+message VerifyUserPwdResponse {
     ResOfPwd resOfPwd = 1;
 }
 

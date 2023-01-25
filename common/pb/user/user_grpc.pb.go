@@ -23,7 +23,7 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type UserServiceClient interface {
 	// SayHello 方法
-	VerifyUserPwd(ctx context.Context, in *GetAllUserBlogsRequest, opts ...grpc.CallOption) (*GetAllUserBlogsResponse, error)
+	VerifyUserPwd(ctx context.Context, in *VerifyUserPwdRequest, opts ...grpc.CallOption) (*VerifyUserPwdResponse, error)
 }
 
 type userServiceClient struct {
@@ -34,8 +34,8 @@ func NewUserServiceClient(cc grpc.ClientConnInterface) UserServiceClient {
 	return &userServiceClient{cc}
 }
 
-func (c *userServiceClient) VerifyUserPwd(ctx context.Context, in *GetAllUserBlogsRequest, opts ...grpc.CallOption) (*GetAllUserBlogsResponse, error) {
-	out := new(GetAllUserBlogsResponse)
+func (c *userServiceClient) VerifyUserPwd(ctx context.Context, in *VerifyUserPwdRequest, opts ...grpc.CallOption) (*VerifyUserPwdResponse, error) {
+	out := new(VerifyUserPwdResponse)
 	err := c.cc.Invoke(ctx, "/user.UserService/VerifyUserPwd", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -48,7 +48,7 @@ func (c *userServiceClient) VerifyUserPwd(ctx context.Context, in *GetAllUserBlo
 // for forward compatibility
 type UserServiceServer interface {
 	// SayHello 方法
-	VerifyUserPwd(context.Context, *GetAllUserBlogsRequest) (*GetAllUserBlogsResponse, error)
+	VerifyUserPwd(context.Context, *VerifyUserPwdRequest) (*VerifyUserPwdResponse, error)
 	mustEmbedUnimplementedUserServiceServer()
 }
 
@@ -56,7 +56,7 @@ type UserServiceServer interface {
 type UnimplementedUserServiceServer struct {
 }
 
-func (UnimplementedUserServiceServer) VerifyUserPwd(context.Context, *GetAllUserBlogsRequest) (*GetAllUserBlogsResponse, error) {
+func (UnimplementedUserServiceServer) VerifyUserPwd(context.Context, *VerifyUserPwdRequest) (*VerifyUserPwdResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method VerifyUserPwd not implemented")
 }
 func (UnimplementedUserServiceServer) mustEmbedUnimplementedUserServiceServer() {}
@@ -73,7 +73,7 @@ func RegisterUserServiceServer(s grpc.ServiceRegistrar, srv UserServiceServer) {
 }
 
 func _UserService_VerifyUserPwd_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetAllUserBlogsRequest)
+	in := new(VerifyUserPwdRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -85,7 +85,7 @@ func _UserService_VerifyUserPwd_Handler(srv interface{}, ctx context.Context, de
 		FullMethod: "/user.UserService/VerifyUserPwd",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServiceServer).VerifyUserPwd(ctx, req.(*GetAllUserBlogsRequest))
+		return srv.(UserServiceServer).VerifyUserPwd(ctx, req.(*VerifyUserPwdRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }

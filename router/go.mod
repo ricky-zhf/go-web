@@ -6,9 +6,8 @@ require (
 	github.com/gin-gonic/gin v1.8.2
 	github.com/golang/protobuf v1.5.2
 	github.com/jinzhu/gorm v1.9.16
-	github.com/ricky-zhf/go-web/common v0.0.0-20230125025532-c812cb28268a
+	github.com/ricky-zhf/go-web/common v0.0.0-20230125030838-ab352a064f3f
 	github.com/spf13/viper v1.15.0
-	google.golang.org/grpc v1.52.0
 )
 
 require (
@@ -49,6 +48,7 @@ require (
 	golang.org/x/sys v0.3.0 // indirect
 	golang.org/x/text v0.5.0 // indirect
 	google.golang.org/genproto v0.0.0-20221227171554-f9683d7f8bef // indirect
+	google.golang.org/grpc v1.52.0 // indirect
 	google.golang.org/protobuf v1.28.1 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect

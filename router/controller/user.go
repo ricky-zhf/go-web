@@ -45,7 +45,7 @@ func GetUserAllBlogs(c *gin.Context) {
 	client := user.NewUserServiceClient(conn)
 
 	//使用服务定义好的方法
-	res, err := client.GetAllUserBlogs(c, userPb)
+	res, err := client.VerifyUserPwd(c, userPb)
 	if err != nil {
 		log.Println("GetBlog Failed|err=", err)
 		return
