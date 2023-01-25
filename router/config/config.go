@@ -6,16 +6,15 @@ import (
 	"os"
 )
 
-type BackendServices struct {
+type Backends struct {
 	UserService string
 	BlogService string
 }
 
 type Config struct {
-	UserServer string
-	BlogServer string
-	Etcd       Etcd
-	Service    Service
+	Backends Backends
+	Etcd     Etcd
+	Service  Service
 }
 
 type Service struct {

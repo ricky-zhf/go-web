@@ -1,7 +1,11 @@
 service:
-  name: router_server
+  name: blog.RouterService #这个name只跟etcd注册里的服务名有关
   port: 9092
   weight: 1
+
+Backends:
+  BlogService: blog.BlogService
+  UserService: blog.UserService
 
 #port: 10666
 #BackendService:

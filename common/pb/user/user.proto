@@ -20,7 +20,8 @@ service UserService {
 
 // 请求消息
 message GetAllUserBlogsRequest {
-  string user_id = 1;
+  string name = 1;
+  string password = 2;
 }
 
 // 响应消息

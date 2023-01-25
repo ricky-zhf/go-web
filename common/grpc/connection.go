@@ -6,10 +6,11 @@ import (
 	"log"
 )
 
-func GetRpcConn(addr string) *grpc.ClientConn {
+func GetRpcConn(addr string) (*grpc.ClientConn, error) {
 	conn, err := grpc.Dial(addr, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		log.Fatalln("client cannot dial grpc server|err=", err)
+		return nil, err
 	}
-	return conn
+	return conn, nil
 }

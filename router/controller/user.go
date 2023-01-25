@@ -4,15 +4,13 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/golang/protobuf/jsonpb"
 	"github.com/ricky-zhf/go-web/common/etcd"
+	rpc "github.com/ricky-zhf/go-web/common/grpc"
 	"github.com/ricky-zhf/go-web/common/pb/user"
+	"github.com/ricky-zhf/go-web/router/config"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	"log"
 	"net/http"
-)
-
-const (
-	GetUserAllBlogsUri = "/GetUserAllBlogs"
 )
 
 /*
@@ -38,9 +36,10 @@ func GetUserAllBlogs(c *gin.Context) {
 		return
 	}
 
-	address := etcd.GetAddress("blog.UserService")
+	address := etcd.GetAddress(config.Conf.Backends.UserService)
 	log.Println("GetUserAllBlogs GetAddress|addr=", address)
 
+	rpcConn := rpc.GetRpcConn(address)
 	conn, err := grpc.Dial(address, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		log.Fatalln("client cannot dial grpc server|err=", err)
