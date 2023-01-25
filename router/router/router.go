@@ -13,7 +13,7 @@ func SetupRouter(r *gin.Engine) {
 	//v1版本-使用路由组
 	apiGroup := r.Group("api")
 	{
-		blogGroup := apiGroup.Group("/blog.service")
+		blogGroup := apiGroup.Group("/blog.BlogService")
 		{
 			controller.HandlerBlogRouter(blogGroup)
 		}
