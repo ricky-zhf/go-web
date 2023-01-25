@@ -23,7 +23,7 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type UserServiceClient interface {
 	// SayHello 方法
-	GetAllUserBlogs(ctx context.Context, in *GetAllUserBlogsRequest, opts ...grpc.CallOption) (*GetAllUserBlogsResponse, error)
+	VerifyUserPwd(ctx context.Context, in *GetAllUserBlogsRequest, opts ...grpc.CallOption) (*GetAllUserBlogsResponse, error)
 }
 
 type userServiceClient struct {
@@ -34,9 +34,9 @@ func NewUserServiceClient(cc grpc.ClientConnInterface) UserServiceClient {
 	return &userServiceClient{cc}
 }
 
-func (c *userServiceClient) GetAllUserBlogs(ctx context.Context, in *GetAllUserBlogsRequest, opts ...grpc.CallOption) (*GetAllUserBlogsResponse, error) {
+func (c *userServiceClient) VerifyUserPwd(ctx context.Context, in *GetAllUserBlogsRequest, opts ...grpc.CallOption) (*GetAllUserBlogsResponse, error) {
 	out := new(GetAllUserBlogsResponse)
-	err := c.cc.Invoke(ctx, "/user.UserService/GetAllUserBlogs", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/user.UserService/VerifyUserPwd", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -48,7 +48,7 @@ func (c *userServiceClient) GetAllUserBlogs(ctx context.Context, in *GetAllUserB
 // for forward compatibility
 type UserServiceServer interface {
 	// SayHello 方法
-	GetAllUserBlogs(context.Context, *GetAllUserBlogsRequest) (*GetAllUserBlogsResponse, error)
+	VerifyUserPwd(context.Context, *GetAllUserBlogsRequest) (*GetAllUserBlogsResponse, error)
 	mustEmbedUnimplementedUserServiceServer()
 }
 
@@ -56,8 +56,8 @@ type UserServiceServer interface {
 type UnimplementedUserServiceServer struct {
 }
 
-func (UnimplementedUserServiceServer) GetAllUserBlogs(context.Context, *GetAllUserBlogsRequest) (*GetAllUserBlogsResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetAllUserBlogs not implemented")
+func (UnimplementedUserServiceServer) VerifyUserPwd(context.Context, *GetAllUserBlogsRequest) (*GetAllUserBlogsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method VerifyUserPwd not implemented")
 }
 func (UnimplementedUserServiceServer) mustEmbedUnimplementedUserServiceServer() {}
 
@@ -72,20 +72,20 @@ func RegisterUserServiceServer(s grpc.ServiceRegistrar, srv UserServiceServer) {
 	s.RegisterService(&UserService_ServiceDesc, srv)
 }
 
-func _UserService_GetAllUserBlogs_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _UserService_VerifyUserPwd_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetAllUserBlogsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UserServiceServer).GetAllUserBlogs(ctx, in)
+		return srv.(UserServiceServer).VerifyUserPwd(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/user.UserService/GetAllUserBlogs",
+		FullMethod: "/user.UserService/VerifyUserPwd",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServiceServer).GetAllUserBlogs(ctx, req.(*GetAllUserBlogsRequest))
+		return srv.(UserServiceServer).VerifyUserPwd(ctx, req.(*GetAllUserBlogsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -98,8 +98,8 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*UserServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "GetAllUserBlogs",
-			Handler:    _UserService_GetAllUserBlogs_Handler,
+			MethodName: "VerifyUserPwd",
+			Handler:    _UserService_VerifyUserPwd_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

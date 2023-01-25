@@ -10,12 +10,10 @@ option go_package="github.com/ricky-zhf/go-web/common/pb/user";
 // 定义包名
 package user;
 
-import "pb/blog/blog.proto";
-
 // 定义服务
 service UserService {
   // SayHello 方法
-  rpc GetAllUserBlogs (GetAllUserBlogsRequest) returns (GetAllUserBlogsResponse) {}
+  rpc VerifyUserPwd (GetAllUserBlogsRequest) returns (GetAllUserBlogsResponse) {}
 }
 
 // 请求消息
@@ -24,8 +22,12 @@ message GetAllUserBlogsRequest {
   string password = 2;
 }
 
+enum ResOfPwd {
+    Pass = 0;
+    Forbid = 1;
+}
 // 响应消息
 message GetAllUserBlogsResponse {
-  repeated blogProto.Blog blog = 1;
+    ResOfPwd resOfPwd = 1;
 }
 
