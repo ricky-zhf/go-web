@@ -4,7 +4,7 @@ go 1.18
 
 require (
 	github.com/jinzhu/gorm v1.9.16
-	github.com/ricky-zhf/go-web/common v0.0.0-20230125032143-a6568ac0d8c1
+	github.com/ricky-zhf/go-web/common v0.0.0-20230125110625-cef6e02057ba
 	github.com/spf13/viper v1.15.0
 	google.golang.org/grpc v1.52.0
 )

@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"context"
 	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"github.com/golang/protobuf/jsonpb"
@@ -18,6 +19,9 @@ func HandlerBlogRouter(r *gin.RouterGroup) {
 }
 
 func GetUserAllBlogs(c *gin.Context) {
+	log.Printf("======get in router=====|uuid=%+v\n", c.Value("context"))
+	ctx := c.Value("context").(context.Context)
+	log.Println("====traceId=", ctx.Value("traceId"))
 	data, err := c.GetRawData()
 	if err != nil {
 		log.Println("GetUserAllBlogs GetRawData failed|err=", err)
@@ -32,7 +36,7 @@ func GetUserAllBlogs(c *gin.Context) {
 
 	//这里可以直接集成到common包里，为了清晰流程放在业务代码中
 	address := etcd.GetAddress(config.Conf.Backends.UserService)
-	log.Println("GetUserAllBlogs GetAddress|addr=", address)
+	log.Println("GetUserAllBlogs GetAddress UserService|addr=", address)
 
 	conn, err := rpc.GetRpcConn(address)
 	if err != nil {
@@ -57,7 +61,9 @@ func GetUserAllBlogs(c *gin.Context) {
 	}
 
 	//通过user和password校验，获取blogs
-	conn, err = rpc.GetRpcConn(etcd.GetAddress(config.Conf.Backends.BlogService))
+	address = etcd.GetAddress(config.Conf.Backends.BlogService)
+	log.Println("GetUserAllBlogs GetAddress BlogService|addr=", address)
+	conn, err = rpc.GetRpcConn(address)
 	if err != nil {
 		log.Println("GetUserAllBlogs GetRpcConn failed|err=", err)
 		return

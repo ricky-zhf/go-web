@@ -1,7 +1,9 @@
 package router
 
 import (
+	"context"
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"github.com/ricky-zhf/go-web/router/controller"
 	"log"
 )
@@ -29,7 +31,7 @@ func InitRouter() error {
 	// 创建路由
 	gin.ForceConsoleColor()
 	r := gin.Default()
-
+	r.Use(addUuid())
 	// 绑定路由规则，执行的函数（gin.Context，封装了request和response）
 	SetupRouter(r)
 
@@ -39,4 +41,15 @@ func InitRouter() error {
 		return err
 	}
 	return nil
+}
+
+func addUuid() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		s := uuid.New().String()
+		ctx := context.WithValue(c.Request.Context(), "traceId", s)
+		c.Set("context", ctx)
+		c.Writer.Header().Set("X-Request-Id", s)
+		log.Println("get in addUuid...|uuid=", s)
+		c.Next()
+	}
 }
