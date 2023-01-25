@@ -13,21 +13,15 @@ func SetupRouter(r *gin.Engine) {
 	//v1版本-使用路由组
 	apiGroup := r.Group("api")
 	{
-		//blogGroup := apiGroup.Group("/blog.service")
-
-		userGroup := apiGroup.Group("/blog.UserService")
+		blogGroup := apiGroup.Group("/blog.service")
 		{
-			controller.HandlerUserRouter(userGroup)
+			controller.HandlerBlogRouter(blogGroup)
 		}
 
-		/*添加待办*/
-		apiGroup.POST("/blog.Server", controller.BlogServiceRoute)
-		////查看所有的待办事项
-		//apiGroup.GET("/todo", controller.GetTodoList)
-		////更新待办
-		//apiGroup.PUT("/todo/:id", controller.UpdateATodo)
-		////删除待办
-		//apiGroup.DELETE("/todo/:id", controller.DeleteATodo)
+		//userGroup := apiGroup.Group("/blog.UserService")
+		{
+			//...
+		}
 	}
 }
 

@@ -12,16 +12,16 @@ package blogProto;
 
 // 定义服务
 service BlogService {
-  rpc GetBlog (GetBlogRequest) returns (GetBlogResponse) {}
+  rpc GetUserAllBlogs (GetUserAllBlogsRequest) returns (GetUserAllBlogsResponse) {}
 }
 
 // 请求消息
-message GetBlogRequest {
-  string title = 1;
+message GetUserAllBlogsRequest {
+  string user_name = 1;
 }
 
 // 响应消息
-message GetBlogResponse {
+message GetUserAllBlogsResponse {
   repeated Blog blog = 1;
 }
 

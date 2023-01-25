@@ -22,8 +22,7 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type BlogServiceClient interface {
-	// SayHello 方法
-	GetBlog(ctx context.Context, in *GetBlogRequest, opts ...grpc.CallOption) (*GetBlogResponse, error)
+	GetUserAllBlogs(ctx context.Context, in *GetUserAllBlogsRequest, opts ...grpc.CallOption) (*GetUserAllBlogsResponse, error)
 }
 
 type blogServiceClient struct {
@@ -34,9 +33,9 @@ func NewBlogServiceClient(cc grpc.ClientConnInterface) BlogServiceClient {
 	return &blogServiceClient{cc}
 }
 
-func (c *blogServiceClient) GetBlog(ctx context.Context, in *GetBlogRequest, opts ...grpc.CallOption) (*GetBlogResponse, error) {
-	out := new(GetBlogResponse)
-	err := c.cc.Invoke(ctx, "/blogProto.BlogService/GetBlog", in, out, opts...)
+func (c *blogServiceClient) GetUserAllBlogs(ctx context.Context, in *GetUserAllBlogsRequest, opts ...grpc.CallOption) (*GetUserAllBlogsResponse, error) {
+	out := new(GetUserAllBlogsResponse)
+	err := c.cc.Invoke(ctx, "/blogProto.BlogService/GetUserAllBlogs", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -47,8 +46,7 @@ func (c *blogServiceClient) GetBlog(ctx context.Context, in *GetBlogRequest, opt
 // All implementations must embed UnimplementedBlogServiceServer
 // for forward compatibility
 type BlogServiceServer interface {
-	// SayHello 方法
-	GetBlog(context.Context, *GetBlogRequest) (*GetBlogResponse, error)
+	GetUserAllBlogs(context.Context, *GetUserAllBlogsRequest) (*GetUserAllBlogsResponse, error)
 	mustEmbedUnimplementedBlogServiceServer()
 }
 
@@ -56,8 +54,8 @@ type BlogServiceServer interface {
 type UnimplementedBlogServiceServer struct {
 }
 
-func (UnimplementedBlogServiceServer) GetBlog(context.Context, *GetBlogRequest) (*GetBlogResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetBlog not implemented")
+func (UnimplementedBlogServiceServer) GetUserAllBlogs(context.Context, *GetUserAllBlogsRequest) (*GetUserAllBlogsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUserAllBlogs not implemented")
 }
 func (UnimplementedBlogServiceServer) mustEmbedUnimplementedBlogServiceServer() {}
 
@@ -72,20 +70,20 @@ func RegisterBlogServiceServer(s grpc.ServiceRegistrar, srv BlogServiceServer) {
 	s.RegisterService(&BlogService_ServiceDesc, srv)
 }
 
-func _BlogService_GetBlog_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetBlogRequest)
+func _BlogService_GetUserAllBlogs_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUserAllBlogsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(BlogServiceServer).GetBlog(ctx, in)
+		return srv.(BlogServiceServer).GetUserAllBlogs(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/blogProto.BlogService/GetBlog",
+		FullMethod: "/blogProto.BlogService/GetUserAllBlogs",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(BlogServiceServer).GetBlog(ctx, req.(*GetBlogRequest))
+		return srv.(BlogServiceServer).GetUserAllBlogs(ctx, req.(*GetUserAllBlogsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -98,8 +96,8 @@ var BlogService_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*BlogServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "GetBlog",
-			Handler:    _BlogService_GetBlog_Handler,
+			MethodName: "GetUserAllBlogs",
+			Handler:    _BlogService_GetUserAllBlogs_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

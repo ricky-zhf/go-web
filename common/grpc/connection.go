@@ -6,6 +6,7 @@ import (
 	"log"
 )
 
+//GetRpcConn 获取grpc的client
 func GetRpcConn(addr string) (*grpc.ClientConn, error) {
 	conn, err := grpc.Dial(addr, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
