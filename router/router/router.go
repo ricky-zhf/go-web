@@ -10,7 +10,7 @@ import (
 
 func SetupRouter(r *gin.Engine) {
 
-	//括号内的是变量，所以IndexHandler后不能加括号，在go中，当我们将函数本身赋值给某个变量的时候，是不能加括号的
+	//括号内的是变量，所以IndexHandler后不能加括号，在go中，当我们将函数本身赋值给某个变量的时候，是不能加括号的。
 	r.GET("/", controller.IndexHandler)
 	//v1版本-使用路由组
 	apiGroup := r.Group("api")

@@ -71,7 +71,7 @@ func (e *EtcdRegister) WatchLicense(eChan <-chan *clientv3.LeaseKeepAliveRespons
 		select {
 		case <-eChan:
 			// 续约成功这里会输出eChan
-			//log.Printf("watcher keepalive successfully|lience:%+v \n", l)
+			// log.Printf("watcher keepalive successfully|license:%+v \n", l)
 		case <-e.ctx.Done():
 			_ = e.Close()
 			log.Println("watcher keepalive end...")
@@ -94,8 +94,8 @@ func (e *EtcdRegister) Close() error {
 	return e.etcdClient.Close()
 }
 
-// RegisterServeice 注册服务 expire 过期时间
-func (e *EtcdRegister) RegisterServeice(serviceName, ip, port, weight string, expire int64) {
+// RegisterService 注册服务 expire 过期时间
+func (e *EtcdRegister) RegisterService(serviceName, ip, port, weight string, expire int64) {
 	// 创建租约
 	var err error
 	if err = e.CreateLease(expire); err != nil {
@@ -140,7 +140,7 @@ func RegisterAndDiscover(endpoints []string, expire int, serviceName, port, weig
 	//defer etcdTool.Close()
 
 	// 服务注册, 这里最好不要用协程，不然下面发现时可能无法发现当前注册的服务
-	etcdTool.RegisterServeice(serviceName, tools.GetLocalIP(), port, weight, ttl)
+	etcdTool.RegisterService(serviceName, tools.GetLocalIP(), port, weight, ttl)
 
 	// 服务发现
 	go etcdTool.DiscoverService()
