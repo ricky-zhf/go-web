@@ -58,7 +58,7 @@ func (e *EtcdRegister) BindLease(key string, value string) error {
 func (e *EtcdRegister) KeepAlive() (<-chan *clientv3.LeaseKeepAliveResponse, error) {
 	resChan, err := e.etcdClient.KeepAlive(e.ctx, e.leaseId)
 	if err != nil {
-		log.Println("keepAlive failed,error=", resChan)
+		log.Println("keepAlive failed,error=", err)
 		return nil, err
 	}
 
